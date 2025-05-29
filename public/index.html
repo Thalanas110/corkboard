@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Corkboard</title>
+    <link rel="stylesheet" href="decorations.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">📌 Public Corkboard</h1>
+            <nav class="nav">
+                <a href="/admin.html" class="nav-link">Admin Panel</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <!-- Post Creation Form -->
+            <section class="post-form-section">
+                <h2>Share Your Thoughts</h2>
+                <form id="postForm" class="post-form">
+                    <div class="form-group">
+                        <label for="title">Title *</label>
+                        <input type="text" id="title" name="title" required maxlength="255">
+                    </div>
+                    <div class="form-group">
+                        <label for="content">Content *</label>
+                        <textarea id="content" name="content" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="author">Your Name (optional)</label>
+                        <input type="text" id="author" name="author" maxlength="100" placeholder="Anonymous">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Post to Corkboard</button>
+                </form>
+            </section>
+
+            <!-- Posts Display -->
+            <section class="posts-section">
+                <h2>Recent Posts</h2>
+                <div id="postsContainer" class="posts-container">
+                    <div class="loading">Loading posts...</div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Public Corkboard. Share your thoughts with the world.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

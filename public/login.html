@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Corkboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">🔑 Admin Login</h1>
+            <nav class="nav">
+                <a href="/index.html" class="nav-link">Back to Corkboard</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="auth-container">
+                <div class="auth-form">
+                    <h2>Admin Authentication</h2>
+                    <p class="auth-description">Sign in to access the admin panel and manage the corkboard.</p>
+                    
+                    <form id="loginForm" class="login-form">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+                    </form>
+                    
+                    <div id="loginError" class="error-message" style="display: none;"></div>
+                    <div id="loginSuccess" class="success-message" style="display: none;">Login successful! Redirecting...</div>
+                </div>
+                
+                <div class="auth-hero">
+                    <h3>Corkboard Admin Panel</h3>
+                    <p>Manage your public corkboard with powerful admin tools:</p>
+                    <ul class="feature-list">
+                        <li>📊 View detailed statistics</li>
+                        <li>🗑️ Clear all posts when needed</li>
+                        <li>👀 Preview recent posts</li>
+                        <li>⚡ Real-time data updates</li>
+                    </ul>
+                    <div class="hero-visual">
+                        <div class="demo-stat">
+                            <span class="demo-number">42</span>
+                            <span class="demo-label">Total Posts</span>
+                        </div>
+                        <div class="demo-stat">
+                            <span class="demo-number">7</span>
+                            <span class="demo-label">Today</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="login.js"></script>
+</body>
+</html>
