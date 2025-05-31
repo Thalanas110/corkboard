@@ -8,7 +8,7 @@ const pool = new Pool({
 });
 
 // creates the table, only if doesn't exist
-async function initDb() {
+async function initDatabase() {
     try {
         await pool.query(`
             CREATE TABLE IF NOT EXISTS posts (
@@ -69,7 +69,7 @@ async function getAllPosts() {
 //  displays the number of posts in the corkboard
 async function getPostCount() {
     try {
-        const resu;t = await pool.query(
+        const result = await pool.query(
             'SEKECT COUNT(*) AS count FROM posts'
         );
         return parseInt(result.rows[0].count);
