@@ -1,9 +1,12 @@
+require('dotenv').config();
+
 const http = require('http');
 const url = require('url');
 const path = require('path');
 const fs = require('fs');
 const { initDatabase, createPost, getAllPosts, clearAllPosts, getPostCount } = require('./database');
 const { comparePasswords, generateSessionId, sessions } = require('./auth');
+
 
 // Initialize database on startup
 initDatabase();
