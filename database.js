@@ -86,10 +86,25 @@ async function getPostCount() {
     }
 }
 
+// New function to get admin user by username from admintable
+async function getAdminByUsername(username) {
+    try {
+        const [rows] = await pool.query(
+            'SELECT * FROM admintable WHERE username = ? LIMIT 1',
+            [username]
+        );
+        return rows[0];
+    } catch (error) {
+        console.error('Failed to get admin user.', error);
+        throw error;
+    }
+}
+
 module.exports = {
     initDatabase,
     createPost,
     getAllPosts,
     clearAllPosts,
-    getPostCount
+    getPostCount,
+    getAdminByUsername
 };

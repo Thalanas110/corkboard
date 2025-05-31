@@ -4,7 +4,7 @@ const http = require('http');
 const url = require('url');
 const path = require('path');
 const fs = require('fs');
-const { initDatabase, createPost, getAllPosts, clearAllPosts, getPostCount } = require('./database');
+const { initDatabase, createPost, getAllPosts, clearAllPosts, getPostCount, getAdminByUsername } = require('./database');
 const { comparePasswords, generateSessionId, sessions } = require('./auth');
 
 
@@ -85,25 +85,28 @@ async function handleApiRequest(req, res, pathname, method) {
             res.end(JSON.stringify(post));
         }
         else if (pathname === '/api/admin/login' && method === 'POST') {
-            const body = await getRequestBody(req);
-            const { username, password } = JSON.parse(body);
-            
-            // admin credentials on dotenv for easier access hehe
-            const adminUsername = process.env.ADMIN_USERNAME;
-            const adminPasswordHash = process.env.ADMIN_PASSWORD_HASH;
-            
-            if (username === adminUsername && await comparePasswords(password, adminPasswordHash)) {
-                const sessionId = generateSessionId();
-                sessions[sessionId] = { username, isAdmin: true, createdAt: Date.now() };
-                
-                res.writeHead(200, { 
-                    'Content-Type': 'application/json',
-                    'Set-Cookie': `sessionId=${sessionId}; HttpOnly; Path=/; Max-Age=3600`
-                });
-                res.end(JSON.stringify({ success: true }));
-            } else {
-                res.writeHead(401, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ error: 'Invalid credentials' }));
+            try {
+                const body = await getRequestBody(req);
+                const { username, password } = JSON.parse(body);
+
+                const adminUser = await getAdminByUsername(username);
+                if (adminUser && password === adminUser.password) {
+                    const sessionId = generateSessionId();
+                    sessions[sessionId] = { username, isAdmin: true, createdAt: Date.now() };
+
+                    res.writeHead(200, {
+                        'Content-Type': 'application/json',
+                        'Set-Cookie': `sessionId=${sessionId}; HttpOnly; Path=/; Max-Age=3600`
+                    });
+                    res.end(JSON.stringify({ success: true }));
+                } else {
+                    res.writeHead(401, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Invalid credentials' }));
+                }
+            } catch (error) {
+                console.error('Login handler error:', error);
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Internal server error during login' }));
             }
         }
         else if (pathname === '/api/admin/logout' && method === 'POST') {
@@ -178,7 +181,8 @@ async function handleApiRequest(req, res, pathname, method) {
             res.writeHead(404, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ error: 'Not found' }));
         }
-    } catch (error) {
+    } 
+    catch (error) {
         console.error('API Error:', error);
         res.writeHead(500, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: 'Internal server error' }));
