@@ -1,10 +1,12 @@
-const pool = new Pool({
+const mysql = require('mysql2/promise');
+
+const pool = mysql.createPool({
     host: process.env.HOST,
     port: process.env.PORT,
     database: process.env.DATABASE,
     user: process.env.USER,
     password: process.env.PASSWORD,
-    connectionString: process.env.DATABASE_URL,
+    // connectionLimit: 10, // optional pool size
 });
 
 // creates the table, only if doesn't exist
@@ -12,10 +14,10 @@ async function initDatabase() {
     try {
         await pool.query(`
             CREATE TABLE IF NOT EXISTS posts (
-            id INT PRIMARY KEY,
+            id INT PRIMARY KEY AUTO_INCREMENT,
             title VARCHAR(255) NOT NULL,
             content TEXT NOT NULL,
-            author VARCHAR(100) DEFAULT 'Anonymouys',
+            author VARCHAR(100) DEFAULT 'Anonymous',
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
@@ -30,10 +32,12 @@ async function initDatabase() {
 // allows the user to create the posts
 async function createPost(title, content, author = 'Anonymous') {
     try {
-        const result = await pool.query(
-            'INSERT INTO posts (title, content, author) VALUES (?, ?, ?) RETURNING *',[title, content, author]
+        const [result] = await pool.query(
+            'INSERT INTO posts (title, content, author) VALUES (?, ?, ?)', [title, content, author]
         );
-        return result.rows(0);
+        // Return the inserted post with the new id
+        const [rows] = await pool.query('SELECT * FROM posts WHERE id = ?', [result.insertId]);
+        return rows[0];
     }
     catch (error) {
         console.error('Post not created.', error);
@@ -55,10 +59,10 @@ async function clearAllPosts() {
 // displays all the posts for everyone else
 async function getAllPosts() {
     try {
-        const result = await pool.query(
+        const [rows] = await pool.query(
             'SELECT * FROM posts ORDER BY created_at DESC'
         );
-        return result.rows;
+        return rows;
     }
     catch (error) {
         console.error('Failed to retrieve posts.', error);
@@ -66,13 +70,13 @@ async function getAllPosts() {
     }
 }
 
-//  displays the number of posts in the corkboard
+// displays the number of posts in the corkboard
 async function getPostCount() {
     try {
-        const result = await pool.query(
-            'SEKECT COUNT(*) AS count FROM posts'
+        const [rows] = await pool.query(
+            'SELECT COUNT(*) AS count FROM posts'
         );
-        return parseInt(result.rows[0].count);
+        return parseInt(rows[0].count);
     }
     catch (error) {
         console.error('Failed to get post count.', error);

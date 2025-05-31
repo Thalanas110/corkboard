@@ -65,8 +65,8 @@ async function handleApiRequest(req, res, pathname, method) {
             const { username, password } = JSON.parse(body);
             
             // Simple admin credentials (in production, this should be from database)
-            const adminUsername = process.env.ADMIN_USERNAME || 'admin';
-            const adminPasswordHash = process.env.ADMIN_PASSWORD_HASH || await hashPassword('admin123');
+            const adminUsername = process.env.ADMIN_USERNAME;
+            const adminPasswordHash = process.env.ADMIN_PASSWORD_HASH;
             
             if (username === adminUsername && await comparePasswords(password, adminPasswordHash)) {
                 const sessionId = generateSessionId();
@@ -215,7 +215,7 @@ function parseCookies(cookieHeader) {
     return cookies;
 }
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 server.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on port ${PORT}`);
 });
