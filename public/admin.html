@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Admin Panel - Corkboard</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Corkboard</title>
+    <link rel="stylesheet" href="decorations.css">
+</head>
 <body>
     <header class="header admin-header">
         <div class="container">
@@ -12,38 +13,7 @@
             <nav class="nav">
                 <a href="/index.html" class="nav-link">Public Board</a>
                 <button id="darkModeToggle" class="btn btn-secondary" aria-label="Toggle Dark Mode">
-                    <svg id="darkModeIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-<thinking>
-The user wants to use a specific SVG icon for the dark mode toggle instead of the FontAwesome "fa fa-moon" icon currently used.
-
-I will update the dark mode toggle buttons in admin.html, index.html, and login.html to use the provided SVG icon instead of the <i> element with FontAwesome classes.
-
-I will also remove the FontAwesome CSS link from admin.html since it will no longer be needed.
-
-I will proceed with editing the three HTML files to replace the icon with the provided SVG.
-</thinking>
-
-<edit_file>
-<path>public/admin.html</path>
-<content>
-<<<<<<< SEARCH
-                <button id="darkModeToggle" class="btn btn-secondary" aria-label="Toggle Dark Mode">
                     <i id="darkModeIcon" class="fa fa-moon"></i>
-                </button>
-=======
-                <button id="darkModeToggle" class="btn btn-secondary" aria-label="Toggle Dark Mode">
-                    <svg id="darkModeIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
                 </button>
                 <button id="logoutBtn" class="btn btn-secondary">Logout</button>
             </nav>
