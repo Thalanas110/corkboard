@@ -1,4 +1,4 @@
-// Main application JavaScript for the public corkboard
+// corkboard javascript application
 
 class CorkboardApp {
     constructor() {
@@ -52,7 +52,8 @@ class CorkboardApp {
                 
                 // Show success message
                 this.showSuccess('Post added successfully!');
-            } else {
+            } 
+            else {
                 const error = await response.json();
                 this.showError(error.error || 'Failed to create post');
             }
@@ -157,20 +158,24 @@ class CorkboardApp {
         const now = new Date();
         const diffInSeconds = Math.floor((now - date) / 1000);
 
-        if (diffInSeconds < 60) {
-            return 'Just now';
+        try {
+            switch (true) {
+            case (diffInSeconds < 60):
+                return 'Just now';
+            case (diffInSeconds < 3600):
+                const minutes = Math.floor(diffInSeconds / 60);
+                return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
+            case (diffInSeconds < 86400):
+                const hours = Math.floor(diffInSeconds / 3600);
+                return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+            default:
+                const days = Math.floor(diffInSeconds / 86400);
+                return `${days} day${days !== 1 ? 's' : ''} ago`;
+            }
         } 
-        else if (diffInSeconds < 3600) {
-            const minutes = Math.floor(diffInSeconds / 60);
-            return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
-        } 
-        else if (diffInSeconds < 86400) {
-            const hours = Math.floor(diffInSeconds / 3600);
-            return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
-        } 
-        else {
-            const days = Math.floor(diffInSeconds / 86400);
-            return `${days} day${days !== 1 ? 's' : ''} ago`;
+        catch (error) {
+            console.error('Error calculating time difference:', error);
+            return 'Unknown time';
         }
     }
 
