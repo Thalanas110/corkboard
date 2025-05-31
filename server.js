@@ -3,35 +3,56 @@ const url = require('url');
 const path = require('path');
 const fs = require('fs');
 const { initDatabase, createPost, getAllPosts, clearAllPosts, getPostCount } = require('./database');
-const { hashPassword, comparePasswords, generateSessionId, sessions } = require('./auth');
+const { comparePasswords, generateSessionId, sessions } = require('./auth');
 
 // Initialize database on startup
 initDatabase();
 
 const server = http.createServer(async (req, res) => {
-    const parsedUrl = url.parse(req.url, true);
-    const pathname = parsedUrl.pathname;
-    const method = req.method;
+    try {
+        const parsedUrl = url.parse(req.url, true);
+        const pathname = parsedUrl.pathname;
+        const method = req.method;
 
-    // CORS headers
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    
-    if (method === 'OPTIONS') {
-        res.writeHead(200);
-        res.end();
-        return;
+        // CORS headers
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        
+        if (method === 'OPTIONS') {
+            res.writeHead(200);
+            res.end();
+            return;
+        }
+
+        // API Routes
+        if (pathname.startsWith('/api/')) {
+            try {
+                await handleApiRequest(req, res, pathname, method);
+            } 
+            catch (apiError) {
+                console.error('API Error:', apiError);
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Internal server error processing API request' }));
+            }
+            return;
+        }
+
+        // Static file serving
+        try {
+            await serveStaticFile(req, res, pathname);
+        } 
+        catch (staticError) {
+            console.error('Static file error:', staticError);
+            res.writeHead(500, { 'Content-Type': 'text/html' });
+            res.end('<h1>500 Internal Server Error</h1><p>Error serving static file</p>');
+        }
+    } 
+    catch (globalError) {
+        console.error('Server error:', globalError);
+        res.writeHead(500, { 'Content-Type': 'text/plain' });
+        res.end('Internal server error');
     }
-
-    // API Routes
-    if (pathname.startsWith('/api/')) {
-        await handleApiRequest(req, res, pathname, method);
-        return;
-    }
-
-    // Static file serving
-    await serveStaticFile(req, res, pathname);
 });
 
 async function handleApiRequest(req, res, pathname, method) {
