@@ -56,7 +56,8 @@ class CorkboardApp {
                 const error = await response.json();
                 this.showError(error.error || 'Failed to create post');
             }
-        } catch (error) {
+        } 
+        catch (error) {
             console.error('Error creating post:', error);
             this.showError('Network error. Please try again.');
         }
@@ -72,7 +73,8 @@ class CorkboardApp {
             } else {
                 this.showError('Failed to load posts');
             }
-        } catch (error) {
+        } 
+        catch (error) {
             console.error('Error loading posts:', error);
             this.renderError('Failed to load posts. Please refresh the page.');
         }

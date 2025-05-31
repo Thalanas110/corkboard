@@ -199,7 +199,8 @@ async function handleApiRequest(req, res, pathname, method) {
                 }
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ success: true }));
-            } catch (error) {
+            } 
+            catch (error) {
                 console.error('Failed to delete post:', error);
                 res.writeHead(500, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ error: 'Internal server error' }));

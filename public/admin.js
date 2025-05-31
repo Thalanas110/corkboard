@@ -68,11 +68,13 @@ class AdminPanel {
             if (data.authenticated) {
                 this.adminDashboard.style.display = 'block';
                 this.loginRequired.style.display = 'none';
-            } else {
+            } 
+            else {
                 this.adminDashboard.style.display = 'none';
                 this.loginRequired.style.display = 'block';
             }
-        } catch (error) {
+        } 
+        catch (error) {
             console.error('Error checking authentication:', error);
             this.authCheck.style.display = 'none';
             this.loginRequired.style.display = 'block';
@@ -94,7 +96,8 @@ class AdminPanel {
             } else {
                 this.showError('Logout failed');
             }
-        } catch (error) {
+        } 
+        catch (error) {
             console.error('Error during logout:', error);
             this.showError('Network error during logout');
         }
@@ -107,12 +110,15 @@ class AdminPanel {
             if (response.ok) {
                 const stats = await response.json();
                 this.renderStats(stats);
-            } else if (response.status === 401) {
+            } 
+            else if (response.status === 401) {
                 window.location.href = '/login.html';
-            } else {
+            } 
+            else {
                 this.showError('Failed to load statistics');
             }
-        } catch (error) {
+        } 
+        catch (error) {
             console.error('Error loading stats:', error);
             this.showError('Network error loading statistics');
         }
@@ -229,10 +235,12 @@ class AdminPanel {
             if (response.ok) {
                 const posts = await response.json();
                 this.renderPostsPreview(posts.slice(0, 5)); // Show only first 5 posts
-            } else {
+            } 
+            else {
                 this.showError('Failed to load posts preview');
             }
-        } catch (error) {
+        } 
+        catch (error) {
             console.error('Error loading posts preview:', error);
         }
     }
@@ -290,12 +298,16 @@ class AdminPanel {
                 // Refresh stats and posts preview
                 await this.loadStats();
                 await this.loadPostsPreview();
-            } else if (response.status === 401) {
+            } 
+            
+            else if (response.status === 401) {
                 window.location.href = '/login.html';
-            } else {
+            } 
+            else {
                 this.showError('Failed to clear posts');
             }
-        } catch (error) {
+        } 
+        catch (error) {
             console.error('Error clearing posts:', error);
             this.showError('Network error while clearing posts');
         }
