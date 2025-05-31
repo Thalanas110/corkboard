@@ -19,12 +19,12 @@
 
     <main class="main">
         <div class="container">
-            <!-- Authentication Check -->
+            <!-- checking auth -->
             <div id="authCheck" class="loading">Checking authentication...</div>
             
-            <!-- Admin Dashboard (hidden until authenticated) -->
+            <!-- admin dashboard -->
             <div id="adminDashboard" class="admin-dashboard" style="display: none;">
-                <!-- Statistics Section -->
+                <!-- statistics -->
                 <section class="stats-section">
                     <h2>Statistics</h2>
                     <div class="stats-grid">
@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     
-                    <!-- Chart Section -->
+                    <!-- charts -->
                     <div class="chart-section">
                         <h3>Posts Per Day (Last 7 Days)</h3>
                         <div class="chart-container">
@@ -53,7 +53,7 @@
                     <button id="refreshStats" class="btn btn-primary">Refresh Stats</button>
                 </section>
 
-                <!-- Controls Section -->
+                <!-- main controls -->
                 <section class="controls-section">
                     <h2>Controls</h2>
                     <div class="controls-grid">
@@ -65,7 +65,7 @@
                     </div>
                 </section>
 
-                <!-- Recent Posts Preview -->
+                <!-- recent posts -->
                 <section class="preview-section">
                     <h2>Recent Posts Preview</h2>
                     <div id="adminPostsContainer" class="posts-container">
@@ -74,7 +74,7 @@
                 </section>
             </div>
 
-            <!-- Login Required Message -->
+            <!-- login required -->
             <div id="loginRequired" class="login-required" style="display: none;">
                 <h2>Authentication Required</h2>
                 <p>You need to be logged in to access the admin panel.</p>
@@ -83,7 +83,7 @@
         </div>
     </main>
 
-    <!-- Confirmation Modal -->
+    <!-- confirmation -->
     <div id="confirmModal" class="modal" style="display: none;">
         <div class="modal-content">
             <h3>Confirm Action</h3>

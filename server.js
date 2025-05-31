@@ -60,7 +60,7 @@ const server = http.createServer(async (req, res) => {
 
 async function handleApiRequest(req, res, pathname, method) {
     try {
-        // Get session from cookie
+        // sessions inside cookies
         const cookies = parseCookies(req.headers.cookie || '');
         const sessionId = cookies.sessionId;
         const isAuthenticated = sessionId && sessions[sessionId];
@@ -88,7 +88,7 @@ async function handleApiRequest(req, res, pathname, method) {
             const body = await getRequestBody(req);
             const { username, password } = JSON.parse(body);
             
-            // Simple admin credentials (in production, this should be from database)
+            // admin credentials on dotenv for easier access hehe
             const adminUsername = process.env.ADMIN_USERNAME;
             const adminPasswordHash = process.env.ADMIN_PASSWORD_HASH;
             
