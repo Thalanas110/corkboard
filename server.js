@@ -103,7 +103,8 @@ async function handleApiRequest(req, res, pathname, method) {
                     res.writeHead(401, { 'Content-Type': 'application/json' });
                     res.end(JSON.stringify({ error: 'Invalid credentials' }));
                 }
-            } catch (error) {
+            } 
+            catch (error) {
                 console.error('Login handler error:', error);
                 res.writeHead(500, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ error: 'Internal server error during login' }));
@@ -177,6 +178,33 @@ async function handleApiRequest(req, res, pathname, method) {
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ authenticated: !!isAuthenticated }));
         }
+        else if (pathname.startsWith('/api/admin/posts/') && method === 'DELETE') {
+            if (!isAuthenticated) {
+                res.writeHead(401, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Unauthorized' }));
+                return;
+            }
+            const postId = pathname.split('/').pop();
+            if (!postId || isNaN(postId)) {
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Invalid post ID' }));
+                return;
+            }
+            try {
+                const [result] = await require('./database').pool.query('DELETE FROM posts WHERE id = ?', [postId]);
+                if (result.affectedRows === 0) {
+                    res.writeHead(404, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Post not found' }));
+                    return;
+                }
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: true }));
+            } catch (error) {
+                console.error('Failed to delete post:', error);
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Internal server error' }));
+            }
+        }
         else {
             res.writeHead(404, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ error: 'Not found' }));
@@ -211,7 +239,8 @@ async function serveStaticFile(req, res, pathname) {
         
         res.writeHead(200, { 'Content-Type': contentType });
         res.end(data);
-    } catch (error) {
+    } 
+    catch (error) {
         res.writeHead(404, { 'Content-Type': 'text/html' });
         res.end('<h1>404 Not Found</h1>');
     }

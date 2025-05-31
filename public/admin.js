@@ -1,4 +1,4 @@
-// javascript admin panel
+// javascrppt admin panel
 
 class AdminPanel {
     constructor() {
