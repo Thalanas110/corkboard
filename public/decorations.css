@@ -217,6 +217,8 @@ body {
 .posts-container {
     display: grid;
     gap: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .post-card {
@@ -225,6 +227,8 @@ body {
     border-radius: var(--radius);
     padding: 1.5rem;
     transition: box-shadow 0.2s, transform 0.2s;
+    max-width: 80;
+    box-sizing: border-box;
 }
 
 .post-card:hover {
