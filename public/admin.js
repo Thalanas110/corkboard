@@ -378,7 +378,56 @@ class AdminPanel {
     }
 }
 
-// Initialize the admin panel when the DOM is loaded
+function applyDarkMode(isDark) {
+    try {
+        if (isDark) {
+            document.body.classList.add('dark-mode');
+            const icon = document.getElementById('darkModeIcon');
+            if (icon) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+        } 
+        else {
+            document.body.classList.remove('dark-mode');
+            const icon = document.getElementById('darkModeIcon');
+            if (icon) {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        }
+    } 
+    catch (error) {
+        console.error('Error applying dark mode:', error);
+    }
+}
+
+function toggleDarkMode() {
+    try {
+        const isDark = document.body.classList.contains('dark-mode');
+        applyDarkMode(!isDark);
+        localStorage.setItem('darkMode', !isDark);
+    } 
+    catch (error) {
+        console.error('Error toggling dark mode:', error);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     new AdminPanel();
+
+    // Apply saved dark mode preference and set up toggle
+    try {
+        const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+        applyDarkMode(savedDarkMode);
+
+        // Set up dark mode toggle button
+        const toggleBtn = document.getElementById('darkModeToggle');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', toggleDarkMode);
+        }
+    } 
+    catch (error) {
+        console.error('Error initializing dark mode:', error);
+    }
 });

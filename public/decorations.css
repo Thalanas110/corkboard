@@ -612,3 +612,82 @@ body {
         align-items: center;
     }
 }
+
+/* Dark mode styles */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+body.dark-mode .header,
+body.dark-mode .footer,
+body.dark-mode .container {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+}
+
+body.dark-mode .nav-link,
+body.dark-mode .btn {
+    color: #e0e0e0;
+    background-color: #333;
+    border-color: #444;
+}
+
+body.dark-mode .btn-primary {
+    background-color: #3a7bd5;
+    border-color: #2a5ca8;
+}
+
+body.dark-mode .btn-secondary {
+    background-color: #555;
+    border-color: #666;
+}
+
+body.dark-mode .btn-danger {
+    background-color: #d9534f;
+    border-color: #b52b27;
+}
+
+body.dark-mode .post-card,
+body.dark-mode .stat-card,
+body.dark-mode .control-card,
+body.dark-mode .modal-content {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    border: 1px solid #444;
+}
+
+body.dark-mode input,
+body.dark-mode textarea {
+    background-color: #333;
+    color: #e0e0e0;
+    border: 1px solid #555;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+    color: #bbb;
+}
+
+body.dark-mode .error-message {
+    background-color: #b94a48;
+    color: #fff;
+}
+
+body.dark-mode .success-message {
+    background-color: #4cae4c;
+    color: #fff;
+}
+
+body.dark-mode .temporary-message {
+    background-color: #444;
+    color: #fff;
+}
+
+body.dark-mode .chart-container {
+    background-color: #1e1e1e;
+}
+
+body.dark-mode .loading {
+    color: #bbb;
+}
