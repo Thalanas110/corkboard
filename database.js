@@ -1,54 +1,42 @@
-const { Pool } = require('pg');
-
-// Database connection
 const pool = new Pool({
-    host: process.env.PGHOST || 'localhost',
-    port: process.env.PGPORT || 5432,
-    database: process.env.PGDATABASE || 'corkboard',
-    user: process.env.PGUSER || 'postgres',
-    password: process.env.PGPASSWORD || 'password',
-    connectionString: process.env.DATABASE_URL
+    host: process.env.HOST,
+    port: process.env.PORT,
+    database: process.env.DATABASE,
+    user: process.env.USER,
+    password: process.env.PASSWORD,
+    connectionString: process.env.DATABASE_URL,
 });
 
-async function initDatabase() {
+// creates the table, only if doesn't exist
+async function initDb() {
     try {
         await pool.query(`
             CREATE TABLE IF NOT EXISTS posts (
-                id SERIAL PRIMARY KEY,
-                title VARCHAR(255) NOT NULL,
-                content TEXT NOT NULL,
-                author VARCHAR(100) DEFAULT 'Anonymous',
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            id INT PRIMARY KEY,
+            title VARCHAR(255) NOT NULL,
+            content TEXT NOT NULL,
+            author VARCHAR(100) DEFAULT 'Anonymouys',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
-        console.log('Database initialized successfully');
-    } catch (error) {
-        console.error('Database initialization error:', error);
+        console.log('Initialization of database is successful');
+    }
+    catch (error) {
+        console.error('Database not initialized.', error);
         throw error;
     }
 }
 
+// allows the user to create the posts
 async function createPost(title, content, author = 'Anonymous') {
     try {
         const result = await pool.query(
-            'INSERT INTO posts (title, content, author) VALUES ($1, $2, $3) RETURNING *',
-            [title, content, author]
+            'INSERT INTO posts (title, content, author) VALUES (?, ?, ?) RETURNING *',[title, content, author]
         );
-        return result.rows[0];
-    } catch (error) {
-        console.error('Error creating post:', error);
-        throw error;
+        return result.rows(0);
     }
-}
-
-async function getAllPosts() {
-    try {
-        const result = await pool.query(
-            'SELECT * FROM posts ORDER BY created_at DESC'
-        );
-        return result.rows;
-    } catch (error) {
-        console.error('Error fetching posts:', error);
+    catch (error) {
+        console.error('Post not created.', error);
         throw error;
     }
 }
@@ -56,19 +44,38 @@ async function getAllPosts() {
 async function clearAllPosts() {
     try {
         await pool.query('DELETE FROM posts');
-        console.log('All posts cleared');
-    } catch (error) {
-        console.error('Error clearing posts:', error);
+        console.log('All posts cleared successfully');
+    }
+    catch (error) {
+        console.error('Failed to clear posts.', error);
         throw error;
     }
 }
 
+// displays all the posts for everyone else
+async function getAllPosts() {
+    try {
+        const result = await pool.query(
+            'SELECT * FROM posts ORDER BY created_at DESC'
+        );
+        return result.rows;
+    }
+    catch (error) {
+        console.error('Failed to retrieve posts.', error);
+        throw error;
+    }
+}
+
+//  displays the number of posts in the corkboard
 async function getPostCount() {
     try {
-        const result = await pool.query('SELECT COUNT(*) FROM posts');
+        const resu;t = await pool.query(
+            'SEKECT COUNT(*) AS count FROM posts'
+        );
         return parseInt(result.rows[0].count);
-    } catch (error) {
-        console.error('Error getting post count:', error);
+    }
+    catch (error) {
+        console.error('Failed to get post count.', error);
         throw error;
     }
 }
