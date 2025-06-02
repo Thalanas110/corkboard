@@ -82,17 +82,23 @@ class CorkboardApp {
     }
 
     renderPosts(posts) {
-        if (posts.length === 0) {
-            this.postsContainer.innerHTML = `
-                <div class="empty-state">
-                    <h3>No posts yet</h3>
-                    <p>Be the first to share your thoughts on the corkboard!</p>
-                </div>
-            `;
-            return;
-        }
+        try {
+            if (posts.length === 0) {
+                this.postsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No posts yet</h3>
+                        <p>Be the first to share your thoughts on the corkboard!</p>
+                    </div>
+                `;
+                return;
+            }
 
-        this.postsContainer.innerHTML = posts.map(post => this.createPostHTML(post)).join('');
+            this.postsContainer.innerHTML = posts.map(post => this.createPostHTML(post)).join('');
+        } 
+        catch (error) {
+            console.error('Error rendering posts:', error);
+            this.renderError('Failed to display posts. Please refresh the page.');
+        }
     }
 
     createPostHTML(post) {
