@@ -71,7 +71,8 @@ class CorkboardApp {
             if (response.ok) {
                 const posts = await response.json();
                 this.renderPosts(posts);
-            } else {
+            } 
+            else {
                 this.showError('Failed to load posts');
             }
         } 
