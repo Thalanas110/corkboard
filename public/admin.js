@@ -246,17 +246,23 @@ class AdminPanel {
     }
 
     renderPostsPreview(posts) {
-        if (posts.length === 0) {
-            this.adminPostsContainer.innerHTML = `
-                <div class="empty-state">
-                    <h3>No posts available</h3>
-                    <p>The corkboard is currently empty.</p>
-                </div>
-            `;
+        try {
+            if (posts.length === 0) {
+                this.adminPostsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No posts available</h3>
+                        <p>The corkboard is currently empty.</p>
+                    </div>
+                `;
+                return;
+            }
+        this.adminPostsContainer.innerHTML = posts.map(post => this.createPostPreviewHTML(post)).join('');
+        } 
+        catch (error) {
+            console.error('Error rendering posts preview:', error);
+            this.showError('Failed to render posts preview');
             return;
         }
-
-        this.adminPostsContainer.innerHTML = posts.map(post => this.createPostPreviewHTML(post)).join('');
     }
 
     createPostPreviewHTML(post) {
@@ -293,7 +299,7 @@ class AdminPanel {
             
             if (response.ok) {
                 this.hideConfirmModal();
-                this.showSuccess('All posts have been cleared successfully');
+                this.showMessageModal('Success', 'All posts have been cleared successfully');
                 
                 // Refresh stats and posts preview
                 await this.loadStats();
@@ -304,13 +310,32 @@ class AdminPanel {
                 window.location.href = '/login.html';
             } 
             else {
-                this.showError('Failed to clear posts');
+                this.showMessageModal('Error', 'Failed to clear posts');
             }
         } 
         catch (error) {
             console.error('Error clearing posts:', error);
-            this.showError('Network error while clearing posts');
+            this.showMessageModal('Error', 'Network error while clearing posts');
         }
+    }
+
+    showMessageModal(title, message) {
+        const modal = document.getElementById('messageModal');
+        const titleElem = document.getElementById('messageModalTitle');
+        const bodyElem = document.getElementById('messageModalBody');
+        const okBtn = document.getElementById('messageModalOkBtn');
+
+        titleElem.textContent = title;
+        bodyElem.textContent = message;
+
+        modal.style.display = 'flex';
+
+        const hideModal = () => {
+            modal.style.display = 'none';
+            okBtn.removeEventListener('click', hideModal);
+        };
+
+        okBtn.addEventListener('click', hideModal);
     }
 
     showError(message) {

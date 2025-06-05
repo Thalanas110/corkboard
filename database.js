@@ -50,10 +50,10 @@ async function createPost(title, content, author = 'Anonymous') {
 async function clearAllPosts() {
     try {
         await pool.query('DELETE FROM posts');
-        console.log('All posts cleared successfully');
+        // Removed console.log to avoid console output on success
     }
     catch (error) {
-        console.error('Failed to clear posts.', error);
+        // Removed console.error to avoid console output on failure
         throw error;
     }
 }
