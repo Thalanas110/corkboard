@@ -325,17 +325,23 @@ class AdminPanel {
         const bodyElem = document.getElementById('messageModalBody');
         const okBtn = document.getElementById('messageModalOkBtn');
 
-        titleElem.textContent = title;
-        bodyElem.textContent = message;
+        try {
+            titleElem.textContent = title;
+            bodyElem.textContent = message;
 
-        modal.style.display = 'flex';
+            modal.style.display = 'flex';
 
-        const hideModal = () => {
-            modal.style.display = 'none';
-            okBtn.removeEventListener('click', hideModal);
-        };
+            const hideModal = () => {
+                modal.style.display = 'none';
+                okBtn.removeEventListener('click', hideModal);
+            };
 
-        okBtn.addEventListener('click', hideModal);
+            okBtn.addEventListener('click', hideModal);
+            }
+        catch (error) {
+            console.error('Error showing message modal:', error);
+            this.showError('Failed to display message');
+        }
     }
 
     showError(message) {
@@ -364,11 +370,28 @@ class AdminPanel {
         document.body.appendChild(messageDiv);
 
         // Auto-remove after 5 seconds
-        setTimeout(() => {
+        try{
+            setTimeout(() => {
+            if (messageDiv.parentNode) {
+                messageDiv.parentNode.removeChild(messageDiv);
+            }}, 5000);
+        }
+        catch (error) {
+            console.error('Error removing message:', error);
+            // Manual fallback to remove message
             if (messageDiv.parentNode) {
                 messageDiv.parentNode.removeChild(messageDiv);
             }
-        }, 5000);
+        }
+        finally {
+            console.log('Message displayed:', message);
+            if (type === 'error') {
+                console.error('Error message:', message);
+            } 
+            else {
+                console.log('Success message:', message);
+            }
+        }
     }
 
     getTimeAgo(date) {
